@@ -1,10 +1,10 @@
-import {useEffect, useLayoutEffect} from 'react';
+import {useLayoutEffect} from 'react';
 import {View} from 'react-native';
 
 import {Text} from 'react-native';
 
 import {useGameStore} from '../../state';
-import {PrimaryButton, GameSquare, Screen} from '../../components';
+import {HeaderText, PrimaryButton, GameSquare, Screen} from '../../components';
 import styles from './styles';
 
 import type {PlayerNumber} from '../../types';
@@ -29,6 +29,14 @@ function Game() {
     }
   }
 
+  function startNewGame() {
+    if (isPlayingComputer) {
+      startComputerGame();
+    } else {
+      startTwoPlayerGame();
+    }
+  }
+
   useLayoutEffect(() => {
     if (!isHydrated) {
       hydrateStore();
@@ -37,8 +45,9 @@ function Game() {
 
   return (
     <Screen style={styles.screen}>
+      <HeaderText>Tic-Tac-Toe!</HeaderText>
+
       <View>
-        <Text style={styles.title}>Tic-Tac-Toe!</Text>
         <View style={styles.board}>
           {board.length &&
             board.map((row, rowIdx) => (
@@ -60,20 +69,13 @@ function Game() {
           {...{currentPlayer, isADraw, isPlayingComputer, winner}}
         />
       </View>
+
       <View>
         {(!!winner || isADraw) && (
           <>
             <View style={styles.pushDown}>
-              <PrimaryButton
-                title="Play Against Computer"
-                onPress={startComputerGame}
-              />
+              <PrimaryButton title="Start New Game" onPress={startNewGame} />
             </View>
-            <PrimaryButton
-              isVariant
-              title="Start 2 Player Game"
-              onPress={startTwoPlayerGame}
-            />
           </>
         )}
       </View>
@@ -82,10 +84,10 @@ function Game() {
 }
 
 interface ProgressTextProps {
-  isPlayingComputer: boolean;
-  isADraw: boolean;
-  winner: PlayerNumber | 0;
   currentPlayer: PlayerNumber;
+  isADraw: boolean;
+  isPlayingComputer: boolean;
+  winner: PlayerNumber | 0;
 }
 
 function ProgressText({

@@ -13,6 +13,11 @@ const GAME_SIZE: number = 3;
 
 type BoardType = (PlayerNumber | 0)[][];
 
+export interface MatchResult {
+  player: string;
+  datetime: Date;
+}
+
 // TODO: Smart-mode
 // type Move = {
 //   col: number;
@@ -31,6 +36,7 @@ interface GameState {
   currentPlayer: PlayerNumber;
   diagonalOne: number;
   diagonalTwo: number;
+  history: MatchResult[];
   isADraw: boolean;
   isHydrated: boolean;
   isPlayingComputer: boolean;
@@ -45,6 +51,7 @@ const initialState: GameState = {
   currentPlayer: 1,
   diagonalOne: 0,
   diagonalTwo: 0,
+  history: [],
   isADraw: false,
   isHydrated: false,
   isPlayingComputer: true,
@@ -94,6 +101,7 @@ interface GameStore extends GameState {
   resetStore: (args: Partial<GameState>) => void;
   startComputerGame: () => void;
   startTwoPlayerGame: () => void;
+  updateIsPlayingComputer: (isPlayingComputer: boolean) => void;
 }
 
 export const useGameStore = create<GameStore>((set, get) => ({
@@ -112,6 +120,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   makeMove: (col, row, player, autoCallComputer = true) => {
     const updatedBoard = [...get().board];
     const updatedColumns = [...get().columns];
+    const updatedHistory = [...get().history];
     const updatedRows = [...get().rows];
     const updatedTotalMoves = get().totalMoves + 1;
     let updatedDiagonalOne = get().diagonalOne;
@@ -139,6 +148,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
       Math.abs(updatedDiagonalTwo) === GAME_SIZE
     ) {
       foundWinner = player;
+      const playerName =
+        get().isPlayingComputer && player === 2
+          ? 'Computer'
+          : `Player ${player}`;
+      updatedHistory.push({player: playerName, datetime: new Date()});
     }
 
     const nextPlayer: PlayerNumber = player === 1 ? 2 : 1;
@@ -154,6 +168,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       columns: updatedColumns,
       diagonalOne: updatedDiagonalOne,
       diagonalTwo: updatedDiagonalTwo,
+      history: updatedHistory,
       totalMoves: updatedTotalMoves,
       winner: foundWinner,
     };
@@ -178,6 +193,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       currentPlayer: 1,
       diagonalOne: 0,
       diagonalTwo: 0,
+      history: get().history,
       isADraw: false,
       isHydrated: true,
       isPlayingComputer: true,
@@ -192,5 +208,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
   startTwoPlayerGame: () => {
     get().resetStore({isPlayingComputer: false});
+  },
+  updateIsPlayingComputer: isPlayingComputer => {
+    set({isPlayingComputer});
+    if (isPlayingComputer && get().currentPlayer === 2) {
+      get().makeComputerMove();
+    }
   },
 }));
