@@ -1,18 +1,18 @@
 import {memo, useState} from 'react';
-import {Pressable, StyleSheet, Text} from 'react-native';
+import {Pressable, Text} from 'react-native';
 
-import {Color, FontWeight} from '../../theme';
+import styles from './styles';
 
 interface GameSquareProps {
-  hasRightBorder?: boolean;
   hasBottomBorder?: boolean;
+  hasRightBorder?: boolean;
   onPress?: () => void;
   playerNumber?: number;
 }
 
 function GameSquare({
-  hasRightBorder,
   hasBottomBorder,
+  hasRightBorder,
   onPress,
   playerNumber,
 }: GameSquareProps) {
@@ -42,27 +42,5 @@ function GameSquare({
     </Pressable>
   );
 }
-
-const styles = StyleSheet.create({
-  borderBottom: {
-    borderBottomColor: Color.BLACK,
-  },
-  borderRight: {
-    borderRightColor: Color.BLACK,
-  },
-  square: {
-    alignItems: 'center',
-    borderColor: 'transparent',
-    borderLeftColor: Color.BLACK,
-    borderTopColor: Color.BLACK,
-    borderWidth: 1,
-    flex: 1,
-    justifyContent: 'center',
-  },
-  text: {
-    fontSize: 60,
-    fontWeight: FontWeight.EXTRA_BOLD,
-  },
-});
 
 export default memo(GameSquare);
