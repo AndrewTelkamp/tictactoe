@@ -2,6 +2,7 @@ import {create} from 'zustand';
 
 import {StorageKey} from '../../enums';
 import {saveToStorage, getFromStorage, randNumBetween, wait} from '../../utils';
+
 import type {PlayerNumber} from '../../types';
 
 /*=============================================================================
@@ -12,10 +13,11 @@ const GAME_SIZE: number = 3;
 
 type BoardType = (PlayerNumber | 0)[][];
 
-type Move = {
-  col: number;
-  row: number;
-};
+// TODO: Smart-mode
+// type Move = {
+//   col: number;
+//   row: number;
+// };
 
 function createBoard(size: number): BoardType {
   return Array(size)
@@ -29,9 +31,7 @@ interface GameState {
   currentPlayer: PlayerNumber;
   diagonalOne: number;
   diagonalTwo: number;
-  lastComputerMove?: Move;
   isADraw: boolean;
-  isComputerSmartMode?: boolean;
   isHydrated: boolean;
   isPlayingComputer: boolean;
   rows: number[];
@@ -46,10 +46,8 @@ const initialState: GameState = {
   diagonalOne: 0,
   diagonalTwo: 0,
   isADraw: false,
-  isComputerSmartMode: false,
   isHydrated: false,
   isPlayingComputer: true,
-  lastComputerMove: undefined,
   rows: new Array(GAME_SIZE).fill(0),
   totalMoves: 0,
   winner: 0,
@@ -61,10 +59,10 @@ function generatePosition() {
 
 function generateComputerMove(
   board: BoardType,
-  lastMove?: Move,
-  type: 'random' | 'smart' = 'random',
+  // TODO: smart mode
+  // lastComputerMove?: Move,
+  // type: 'random' | 'smart' = 'random',
 ) {
-  // if (type === 'random' || !lastMove) {
   let col = generatePosition();
   let row = generatePosition();
 
@@ -74,17 +72,10 @@ function generateComputerMove(
   }
 
   return {col, row};
-  // }
 }
 
 function updateStorage(args: Omit<GameState, 'isHydrated'>) {
-  saveToStorage(
-    {
-      ...args,
-      isHydrated: false,
-    },
-    StorageKey.GAME,
-  );
+  saveToStorage({...args, isHydrated: false}, StorageKey.GAME);
 }
 
 /*=============================================================================
@@ -120,8 +111,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
   makeMove: (col, row, player, autoCallComputer = true) => {
     const updatedBoard = [...get().board];
-    const updatedRows = [...get().rows];
     const updatedColumns = [...get().columns];
+    const updatedRows = [...get().rows];
     const updatedTotalMoves = get().totalMoves + 1;
     let updatedDiagonalOne = get().diagonalOne;
     let updatedDiagonalTwo = get().diagonalTwo;
@@ -150,11 +141,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
       foundWinner = player;
     }
 
+    const nextPlayer: PlayerNumber = player === 1 ? 2 : 1;
     const updatedIsADraw = !!(
       updatedTotalMoves === GAME_SIZE * GAME_SIZE && !foundWinner
     );
-
-    const nextPlayer: PlayerNumber = player === 1 ? 2 : 1;
 
     const newState = {
       board: updatedBoard,
@@ -182,17 +172,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     }
   },
   resetStore: () => {
-    set({
-      board: createBoard(GAME_SIZE),
-      currentPlayer: 1,
-      isHydrated: true,
-      diagonalOne: 0,
-      diagonalTwo: 0,
-      rows: new Array(GAME_SIZE).fill(0),
-      columns: new Array(GAME_SIZE).fill(0),
-      totalMoves: 0,
-      winner: 0,
-    });
+    set({...initialState, isHydrated: true});
   },
   startComputerGame: () => {
     get().resetStore();
