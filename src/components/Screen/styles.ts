@@ -1,6 +1,6 @@
 import {StyleSheet} from 'react-native';
 
-import {Color, Size} from '../../theme';
+import {Color} from '../../theme';
 
 export default StyleSheet.create({
   centeredScreen: {
@@ -13,7 +13,7 @@ export default StyleSheet.create({
     flexDirection: 'column',
     minHeight: '100%',
     maxWidth: '100%',
-    padding: Size.DEFAULT,
+    padding: 16,
   },
   list: {
     backgroundColor: Color.LIGHT_GRAY,
