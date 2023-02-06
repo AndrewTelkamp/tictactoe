@@ -17,4 +17,4 @@ function PrimaryButton({
   return <Button {...props} style={{backgroundColor}} />;
 }
 
-export default PrimaryButton;
+export default memo(PrimaryButton);
