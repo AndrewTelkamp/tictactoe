@@ -91,7 +91,7 @@ interface GameStore extends GameState {
     player: PlayerNumber,
     autoCallComputer?: boolean,
   ) => void;
-  resetStore: () => void;
+  resetStore: (args: Partial<GameState>) => void;
   startComputerGame: () => void;
   startTwoPlayerGame: () => void;
 }
@@ -171,15 +171,26 @@ export const useGameStore = create<GameStore>((set, get) => ({
       get().makeComputerMove(updatedBoard);
     }
   },
-  resetStore: () => {
-    set({...initialState, isHydrated: true});
+  resetStore: args => {
+    set({
+      board: createBoard(GAME_SIZE),
+      columns: new Array(GAME_SIZE).fill(0),
+      currentPlayer: 1,
+      diagonalOne: 0,
+      diagonalTwo: 0,
+      isADraw: false,
+      isHydrated: true,
+      isPlayingComputer: true,
+      rows: new Array(GAME_SIZE).fill(0),
+      totalMoves: 0,
+      winner: 0,
+      ...args,
+    });
   },
   startComputerGame: () => {
-    get().resetStore();
-    set({isPlayingComputer: true});
+    get().resetStore({isPlayingComputer: true});
   },
   startTwoPlayerGame: () => {
-    get().resetStore();
-    set({isPlayingComputer: false});
+    get().resetStore({isPlayingComputer: false});
   },
 }));
