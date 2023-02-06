@@ -101,7 +101,7 @@ interface GameStore extends GameState {
   resetStore: (args: Partial<GameState>) => void;
   startComputerGame: () => void;
   startTwoPlayerGame: () => void;
-  updateIsPlayingComputer: (isPlayingComputer: boolean) => void;
+  setIsPlayingComputer: (isPlayingComputer: boolean) => void;
 }
 
 export const useGameStore = create<GameStore>((set, get) => ({
@@ -209,7 +209,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   startTwoPlayerGame: () => {
     get().resetStore({isPlayingComputer: false});
   },
-  updateIsPlayingComputer: isPlayingComputer => {
+  setIsPlayingComputer: isPlayingComputer => {
     set({isPlayingComputer});
     if (isPlayingComputer && get().currentPlayer === 2) {
       get().makeComputerMove();

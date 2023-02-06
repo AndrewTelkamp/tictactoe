@@ -6,8 +6,8 @@ import styles from './styles';
 
 function Settings() {
   const isPlayingComputer = useGameStore(state => state.isPlayingComputer);
-  const updateIsPlayingComputer = useGameStore(
-    state => state.updateIsPlayingComputer,
+  const setIsPlayingComputer = useGameStore(
+    state => state.setIsPlayingComputer,
   );
 
   return (
@@ -15,8 +15,8 @@ function Settings() {
       <HeaderText>Game Settings</HeaderText>
       <Setting
         label="Play Against Computer"
+        onValueChange={val => setIsPlayingComputer(val)}
         value={isPlayingComputer}
-        onValueChange={value => updateIsPlayingComputer(value)}
       />
     </Screen>
   );
