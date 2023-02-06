@@ -1,5 +1,5 @@
 import React, {memo} from 'react';
-import {RefreshControl, SafeAreaView, ScrollView, View} from 'react-native';
+import {RefreshControl, SafeAreaView, ScrollView} from 'react-native';
 
 import styles from './styles';
 
@@ -8,7 +8,7 @@ import type {ScrollViewProps, ViewStyle} from 'react-native';
 
 export interface ScreenProps extends ContentProps {}
 
-export function Screen({style, ...props}: PropsWithChildren<ScreenProps>) {
+export function Screen(props: PropsWithChildren<ScreenProps>) {
   return (
     <SafeAreaView style={[styles.safeArea]}>
       <Content {...props} />
@@ -19,19 +19,19 @@ export function Screen({style, ...props}: PropsWithChildren<ScreenProps>) {
 export interface ContentProps extends ScrollViewProps {
   children: any;
   isNotPadded?: boolean;
-  isSafeArea?: boolean;
   isScrollIndicatorVisible?: boolean;
   onRefresh?: () => void;
   refreshing?: false;
+  style?: ViewStyle;
 }
 
 function Content({
   children,
-  onRefresh,
-  keyboardShouldPersistTaps,
-  isScrollIndicatorVisible,
   isNotPadded,
+  isScrollIndicatorVisible,
+  onRefresh,
   refreshing = false,
+  style = {},
   ...props
 }: ContentProps) {
   return (
@@ -41,8 +41,8 @@ function Content({
       contentContainerStyle={[
         styles.contentContainer,
         isNotPadded && styles.notPadded,
+        {...style},
       ]}
-      keyboardShouldPersistTaps={keyboardShouldPersistTaps}
       showsVerticalScrollIndicator={isScrollIndicatorVisible}
       refreshControl={
         <RefreshControl
