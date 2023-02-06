@@ -100,6 +100,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
     ) {
       foundWinner = player;
     }
+
+    // TODO: add computer player option
+
     const nextPlayer: PlayerNumber = player === 1 ? 2 : 1;
 
     const newState = {
@@ -123,7 +126,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     set({
       board: createBoard(GAME_SIZE),
       currentPlayer: 1,
-      isHydrated: false,
+      isHydrated: true,
       diagonalOne: 0,
       diagonalTwo: 0,
       rows: new Array(GAME_SIZE).fill(0),

@@ -1,8 +1,10 @@
 import {useLayoutEffect} from 'react';
 import {View} from 'react-native';
 
+import {Text} from 'react-native';
+
 import {useGameStore} from '../../state';
-import {PrimaryButton, GameSquare, Screen, Text} from '../../components';
+import {PrimaryButton, GameSquare, Screen} from '../../components';
 import styles from './styles';
 
 import type {PlayerNumber} from '../../types';
@@ -73,14 +75,12 @@ function ProgressText({isADraw, winner, currentPlayer}: ProgressTextProps) {
 
   if (winner) {
     if (winner === 1) {
-      message = 'You win!';
-    } else {
-      message = 'Computer won';
+      message = `Player ${winner} won!`;
     }
   } else if (isADraw) {
     message = "It's a Draw!";
   } else {
-    message = currentPlayer === 1 ? 'Your turn' : "Computer's Turn";
+    message = `Player ${currentPlayer}'s turn!`;
   }
 
   return (
