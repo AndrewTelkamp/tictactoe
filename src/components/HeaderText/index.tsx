@@ -1,4 +1,4 @@
-import React, {memo} from 'react';
+import {memo} from 'react';
 import {Text as RNText} from 'react-native';
 
 import styles from './styles';
