@@ -1,4 +1,3 @@
-import React, {memo} from 'react';
 import {RefreshControl, SafeAreaView, ScrollView} from 'react-native';
 
 import styles from './styles';
@@ -57,4 +56,4 @@ function Content({
   );
 }
 
-export default memo(Screen);
+export default Screen;
