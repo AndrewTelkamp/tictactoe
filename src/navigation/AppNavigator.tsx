@@ -6,13 +6,20 @@ import {TabItem} from '../components';
 import {RouteName} from '../enums';
 import {Color} from '../theme';
 
+// Icons
+import GameIcon from '../assets/game.svg';
+import ScoreboardIcon from '../assets/scoreboard.svg';
+import SettingsIcon from '../assets/settings.svg';
+
+// Screens
 import GameScreen from '../screens/Game';
 import SettingsScreen from '../screens/Settings';
 import ScoreboardScreen from '../screens/Scoreboard';
 
 const Tab = createBottomTabNavigator();
 
-const ACTIVE_TINT_COLOR = Color.PRIMARY;
+const ACTIVE_TINT_COLOR = Color.SECONDARY;
+const ICON_SIZE = 24;
 const INACTIVE_TINT_COLOR = Color.LIGHT_GRAY;
 
 const defaultConfig = {
@@ -20,6 +27,10 @@ const defaultConfig = {
   tabBarActiveTintColor: ACTIVE_TINT_COLOR,
   tabBarInactiveTintColor: INACTIVE_TINT_COLOR,
 };
+
+function getIconColor(isFocused: boolean) {
+  return isFocused ? ACTIVE_TINT_COLOR : INACTIVE_TINT_COLOR;
+}
 
 function AppNavigator() {
   return (
@@ -38,7 +49,13 @@ function AppNavigator() {
             tabBarButton: (props: any) => (
               <TabItem
                 isFocused={props.focused}
-                // icon={}
+                icon={
+                  <GameIcon
+                    fill={getIconColor(props.accessibilityState.selected)}
+                    height={ICON_SIZE}
+                    width={ICON_SIZE}
+                  />
+                }
                 label={RouteName.GAME}
                 theirProps={props}
               />
@@ -54,7 +71,13 @@ function AppNavigator() {
             tabBarButton: (props: any) => (
               <TabItem
                 isFocused={props.focused}
-                // icon={}
+                icon={
+                  <ScoreboardIcon
+                    fill={getIconColor(props.accessibilityState.selected)}
+                    height={ICON_SIZE}
+                    width={ICON_SIZE}
+                  />
+                }
                 label={RouteName.SCOREBOARD}
                 theirProps={props}
               />
@@ -70,7 +93,13 @@ function AppNavigator() {
             tabBarButton: (props: any) => (
               <TabItem
                 isFocused={props.focused}
-                // icon={}
+                icon={
+                  <SettingsIcon
+                    fill={getIconColor(props.accessibilityState.selected)}
+                    height={ICON_SIZE}
+                    width={ICON_SIZE}
+                  />
+                }
                 label={RouteName.SETTINGS}
                 theirProps={props}
               />

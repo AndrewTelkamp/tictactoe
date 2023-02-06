@@ -1,15 +1,11 @@
 import React, {memo} from 'react';
-import {Pressable, View, Text} from 'react-native';
+import {Pressable, Text} from 'react-native';
 
+import {Color} from '../../theme';
 import styles from './styles';
 
-// import {IconName} from '../../enums';
-import {Color, FontWeight} from '../../theme';
-// import Icon from '../Icon';
-// import Text from '../Text';
-
 interface TabItemProps {
-  // icon: IconName;
+  icon: JSX.Element;
   isFocused: boolean;
   label: string;
   size?: number;
@@ -21,18 +17,18 @@ interface TabItemProps {
   };
 }
 
-const TabItem = ({label, size = 24, theirProps}: TabItemProps) => {
+const TabItem = ({icon, label, theirProps}: TabItemProps) => {
   function handlePress() {
     theirProps.onPress();
   }
 
   const color = theirProps.accessibilityState.selected
-    ? Color.PRIMARY
+    ? Color.SECONDARY
     : Color.LIGHT_GRAY;
 
   return (
     <Pressable onPress={handlePress} style={styles.item}>
-      {/* <Icon color={color} name={icon} onPress={handlePress} size={size} /> */}
+      {icon}
       <Text style={[styles.text, {color}]}>{label}</Text>
     </Pressable>
   );

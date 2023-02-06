@@ -23,10 +23,4 @@ export default StyleSheet.create({
   screen: {
     justifyContent: 'space-around',
   },
-  title: {
-    fontSize: 32,
-    fontWeight: '600',
-    marginBottom: 24,
-    textAlign: 'center',
-  },
 });
